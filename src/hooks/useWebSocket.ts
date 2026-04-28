@@ -6,7 +6,7 @@ type Handler = (msg: WsMessage) => void;
 export function useWebSocket(onMessage: Handler) {
   const wsRef = useRef<WebSocket | null>(null);
   const [connected, setConnected] = useState(false);
-  const reconnectTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const reconnectTimer = useRef<number | undefined>(undefined);
 
   const connect = useCallback(() => {
     const ws = new WebSocket(process.env.NEXT_PUBLIC_WS_URL!);
@@ -20,7 +20,7 @@ export function useWebSocket(onMessage: Handler) {
       ws.onclose = () => {
         clearInterval(pingInterval);
         setConnected(false);
-        reconnectTimer.current = setTimeout(connect, 3000);
+        reconnectTimer.current = window.setTimeout(connect, 3000);
       };
     };
 
