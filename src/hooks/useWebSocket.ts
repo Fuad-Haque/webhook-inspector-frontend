@@ -6,7 +6,7 @@ type Handler = (msg: WsMessage) => void;
 export function useWebSocket(onMessage: Handler) {
   const wsRef = useRef<WebSocket | null>(null);
   const [connected, setConnected] = useState(false);
-  const reconnectTimer = useRef<ReturnType<typeof setTimeout>>();
+  const reconnectTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const connect = useCallback(() => {
     const ws = new WebSocket(process.env.NEXT_PUBLIC_WS_URL!);
